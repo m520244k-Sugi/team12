@@ -1,3 +1,4 @@
 # team12
 ソフトウェア工学Ⅱのための練習用リポジトリ
 Ryogo Sugi
+Ando Shinnosuke
