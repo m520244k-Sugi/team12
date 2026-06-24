@@ -2,3 +2,4 @@
 ソフトウェア工学Ⅱのための練習用リポジトリ
 Ryogo Sugi
 Ando Shinnosuke
+Rin Muraguchi
