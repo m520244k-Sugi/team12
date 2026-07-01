@@ -3,5 +3,5 @@
 Ryogo Sugi
 Ando Shinnosuke
 Rin Muraguchi
-
+Ryo Takemoto
 脱出ゲーム
