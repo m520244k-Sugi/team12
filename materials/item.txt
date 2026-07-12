@@ -1,0 +1,19 @@
+•クラス名
+　Item：
+　アイテムの名前、アイコン画像、発見時の拡大画像を持つ
+　(現在どのアイテムを所持しているのかを管理してフラグを立てるインスタンスselectedItemを作成する)
+
+•主担当者名
+　杉井 良冴
+
+•属性（変数）一覧
+　1.String id : アイテムを識別するための固有の名前（"hammer", "key_1"など）。
+　2.PImage img : アイテムの画像データ。
+
+•メソッド一覧
+　1.Item(String id, String imgPath) : コンストラクタ。IDの設定と画像の読み込みを行う。
+　2.void drawIcon(float x, float y, float size, boolean isSelected) : 持ち物欄の特定の座標にアイテムを表示する。
+
+•各属性，各メソッドの内容に関するメモ
+idはロジック判定（どのアイテムか？）に使用するため、打ち間違いに注意する。
+drawIconでは、isSelectedがtrueの場合に枠線を表示するなど、プレイヤーが選択中であることを視覚的に伝える。
