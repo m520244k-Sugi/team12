@@ -7,9 +7,18 @@
 　杉井 良冴
 
 •属性（変数）一覧
-　1.
+　1.ArrayList<Item> items : 現在所持しているアイテムのリスト。
+　2.Item selectedItem : 現在マウスで選択しているアイテム（何も選択していない時はnull）。
+　3.float slotSize : 持ち物スロットの1マスのサイズ。
+　4.float xOffset, yPos : 持ち物欄を表示する開始位置（UIレイアウト用）
 
 •メソッド一覧
-　1.
+　1.Inventory() : コンストラクタ。リストの初期化や描画位置の設定を行う。
+　2.void addItem(Item it) : 新しく手に入れたアイテムをリストに追加する。
+　3.void removeItem(Item it) : 使用済みのアイテムをリストから削除する。
+　4.void display() : 画面下部に所持アイテム一覧をループ処理で描画する。
+　5.void checkClick(int mx, int my) : 持ち物欄がクリックされた際の判定。アイテムの選択、および「アイテム同士の合成（使用）」を処理する。
 
 •各属性，各メソッドの内容に関するメモ
+重要ロジック（合成）： checkClick内で、「selectedItemがhammer」かつ「クリックされたのがpig_1」の場合、pig_1を削除してpig_2とpaper_3を追加する処理を記述する。
+selectedItemは、担当2（家具・ギミック）が「特定のアイテムを持っているか」を確認するために参照される重要な変数。
