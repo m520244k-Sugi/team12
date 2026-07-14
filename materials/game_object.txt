@@ -1,5 +1,5 @@
 ・クラス名
-　game_object：
+　GameObject：
 　位置とクリック判定を持つスーパークラスGameObjectとサブクラスFunitureによってゲーム画面のクリック可能個所の当たり判定を作成
 
 ・主担当者名
@@ -20,7 +20,7 @@
 クリック判定を行う範囲の高さを保持する。
 
 ・メソッド一覧
-1.game_object()
+1.GameObject()
 コンストラクタ。
 オブジェクトの位置と大きさを初期化する。　
 2.boolean isClicked()
