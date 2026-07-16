@@ -21,13 +21,24 @@ class GameObject{
 
 
   //クリックされたか確認
-  boolean isClicked(){
+ boolean isClicked(){
 
-    return mouseX>=x &&
-           mouseX<=x+w &&
-           mouseY>=y &&
-           mouseY<=y+h;
+  return mouseX >= x + w*0.35 &&
+         mouseX <= x + w*0.65 &&
+         mouseY >= y + h*0.35 &&
+         mouseY <= y + h*0.65;
 
-  }
+}
+  //----------------------
+// 当たり判定を狭くする
+//----------------------
+boolean isClicked(float margin){
+
+  return mouseX>=x+margin &&
+         mouseX<=x+w-margin &&
+         mouseY>=y+margin &&
+         mouseY<=y+h-margin;
+
+}
 
 }
