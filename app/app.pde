@@ -5,7 +5,8 @@
 //---------- GameState ----------
 final int ROOM = 0;
 final int BOOK = 1;
-final int CLEAR = 2;
+final int PAINTING = 2;
+final int CLEAR = 3;
 
 int GameState = ROOM;
 
@@ -18,6 +19,8 @@ PImage book2;
 
 PImage painting1;
 PImage painting2;
+
+int paintingSelect = 0;
 
 //---------- システム ----------
 Inventory inventory;
@@ -39,6 +42,9 @@ Funiture door;
 boolean drawerOpened = false;
 boolean safeOpened = false;
 
+boolean openingDrawer = false;
+boolean openingSafe = false;
+
 boolean pigBroken = false;
 
 boolean globeEnabled = false;
@@ -56,6 +62,7 @@ boolean key1Get = false;
 boolean key2Get = false;
 
 boolean pencilGet = false;
+
 
 //=================================
 // setup
@@ -87,60 +94,60 @@ void setup(){
   // 本
   book = new Funiture(
     "book",
-    330,
-    380,
-    140,
-    90,
+    315,
+    385,
+    170,
+    85,
     false
   );
 
   // 真ん中のタンス
   drawer = new Funiture(
     "drawer",
-    455,
-    200,
-    140,
-    180,
+    450,
+    205,
+    145,
+    190,
     true
   );
 
   // 金庫
   safe = new Funiture(
     "safe",
-    455,
-    115,
-    120,
-    80,
+    450,
+    105,
+    135,
+    95,
     true
   );
 
   // ソファ
   sofa = new Funiture(
     "sofa",
-    35,
-    190,
-    240,
-    180,
+    25,
+    185,
+    250,
+    185,
     false
   );
 
   // 豚
   pig = new Funiture(
     "pig",
-    15,
-    120,
-    70,
-    70,
+    20,
+    125,
+    75,
+    75,
     false
   );
 
   // 地球儀
   globe = new Funiture(
     "globe",
-    45,
-    55,
-    90,
-    90,
+    35,
+    40,
+    95,
+    105,
     false
   );
 
@@ -148,19 +155,19 @@ void setup(){
   desk = new Funiture(
     "desk",
     620,
-    300,
-    150,
-    150,
+    290,
+    160,
+    170,
     true
   );
 
   // ドア
   door = new Funiture(
     "door",
-    270,
+    275,
     90,
     150,
-    280,
+    300,
     true
   );
 
@@ -179,7 +186,7 @@ void draw(){
 
     image(room1,0,0,width,height);
 
-    // 持ち物表示
+   
     inventory.display();
 
     // ナンバーロック表示
@@ -221,6 +228,29 @@ void draw(){
     text("クリックで閉じる",400,580);
 
   }
+  
+  else if(GameState==PAINTING){
+
+    background(30);
+
+    if(paintingSelect==1){
+
+        image(painting1,100,40,600,500);
+
+    }
+
+    if(paintingSelect==2){
+
+        image(painting2,100,40,600,500);
+
+    }
+
+    fill(255);
+    textAlign(CENTER);
+    textSize(20);
+    text("クリックで閉じる",400,580);
+
+}
 
   //------------------------
   // クリア画面
@@ -228,7 +258,6 @@ void draw(){
   else if(GameState==CLEAR){
 
     background(40,170,90);
-
     fill(255);
 
     textAlign(CENTER,CENTER);
@@ -242,7 +271,9 @@ void draw(){
   }
   msg.display();
   paperPuzzle.display();
+ 
 }
+
 //=================================
 // mousePressed
 //=================================
@@ -265,60 +296,43 @@ void mousePressed(){
 
   if(numberLock.unlocked){
 
+    numberLock.unlocked = false;
 
-    // タンス解除
-    if(!drawerOpened){
+    // タンス
+    if(openingDrawer){
 
-      drawerOpened=true;
+        drawerOpened = true;
+        drawer.locked = false;
 
-      drawer.locked=false;
+        inventory.addItem(
+            new Item("magonote","magonote.png")
+        );
 
+        msg.show("孫の手を手に入れた");
 
-      inventory.addItem(
-        new Item(
-          "magonote",
-          "magonote.png"
-        )
-      );
-
-
-      msg.show(
-        "孫の手を手に入れた"
-      );
-
+        openingDrawer = false;
     }
 
+    // 金庫
+    else if(openingSafe){
 
-    // 金庫解除
-    else if(!safeOpened){
+        safeOpened = true;
 
+        inventory.addItem(
+            new Item("key_2","key_2.png")
+        );
 
-      safeOpened=true;
+        key2Get = true;
 
+        msg.show("鍵②を手に入れた");
 
-      inventory.addItem(
-        new Item(
-          "key_2",
-          "key_2.png"
-        )
-      );
-
-
-      key2Get=true;
-
-
-      msg.show(
-        "鍵②を手に入れた"
-      );
-
+        openingSafe = false;
     }
+
+    return;
+   }
 
   }
-
-
-  return;
-
-}
 
   //------------------------
   // 本画面
@@ -331,22 +345,62 @@ void mousePressed(){
       bookMessage = true;
       globeEnabled = true;
 
-      println("地球儀の裏を見ろ");
+      msg.show("地球儀の裏を見ろ");
     }
 
     GameState = ROOM;
     return;
   }
+  
+  if(GameState==PAINTING){
+
+    GameState=ROOM;
+
+    return;
+
+}
 
   //------------------------
   // 部屋以外なら終了
   //------------------------
   if(GameState != ROOM) return;
+  
+  //------------------------
+// 左の絵
+//------------------------
+if(mouseX>=120 &&
+   mouseX<=260 &&
+   mouseY>=80 &&
+   mouseY<=220){
+
+    paintingSelect=1;
+
+    GameState=PAINTING;
+
+    return;
+
+}
+
+//------------------------
+// 右の絵
+//------------------------
+if(mouseX>=500 &&
+   mouseX<=640 &&
+   mouseY>=80 &&
+   mouseY<=220){
+
+    paintingSelect=2;
+
+    GameState=PAINTING;
+
+    return;
+
+}
 
   //------------------------
   // 本
   //------------------------
-  if(book.isClicked()){
+  if(book.isClicked(10)){
 
 
  if(pencilGet){
@@ -368,18 +422,21 @@ void mousePressed(){
   //------------------------
   // タンス
   //------------------------
-  if(drawer.isClicked()){
+  if(drawer.isClicked(20)){
 
     if(drawer.locked){
+      
+      openingDrawer = true;
+      openingSafe = false;
 
       // 本当の答えに変更してOK
-      int ans[] = {2,5,8};
+      int ans[] = {7,8,3};
 
       numberLock.open(3,ans);
 
     }else{
 
-      println("引き出しは開いている");
+      msg.show("引き出しは開いている");
 
     }
 
@@ -389,7 +446,7 @@ void mousePressed(){
   //------------------------
   // ソファ（紙①）
   //------------------------
-  if(sofa.isClicked()){
+  if(sofa.isClicked(20)){
 
     if(!paper1Get &&
        inventory.selectedItem != null &&
@@ -403,7 +460,7 @@ void mousePressed(){
 
       inventory.selectedItem = null;
 
-      println("紙①を入手");
+      msg.show("紙①を入手");
     }
 
     return;
@@ -412,10 +469,10 @@ void mousePressed(){
   //------------------------
   // タンス下（紙②）
   //------------------------
-  if(mouseX>450 &&
-     mouseX<600 &&
-     mouseY>360 &&
-     mouseY<430){
+  if(mouseX>455 &&
+     mouseX<605 &&
+     mouseY>365 &&
+     mouseY<440){
 
     if(!paper2Get &&
        inventory.selectedItem != null &&
@@ -429,7 +486,7 @@ void mousePressed(){
 
       inventory.selectedItem = null;
 
-      println("紙②を入手");
+      msg.show("紙②を入手");
     }
 
     return;
@@ -438,9 +495,9 @@ void mousePressed(){
   // タンス最下段（ハンマー）
   //------------------------
   if(mouseX>450 &&
-     mouseX<600 &&
-     mouseY>430 &&
-     mouseY<520){
+     mouseX<605 &&
+     mouseY>435 &&
+     mouseY<535){
 
     if(!hammerGet){
 
@@ -450,7 +507,7 @@ void mousePressed(){
 
       hammerGet = true;
 
-      println("ハンマーを手に入れた");
+      msg.show("ハンマーを手に入れた");
     }
 
     return;
@@ -459,7 +516,7 @@ void mousePressed(){
   //------------------------
   // 豚
   //------------------------
-  if(pig.isClicked()){
+  if(pig.isClicked(8)){
 
     if(inventory.selectedItem!=null &&
        inventory.selectedItem.id.equals("hammer")){
@@ -478,12 +535,12 @@ void mousePressed(){
 
         key1Get=true;
 
-        println("豚を壊した！");
+        msg.show("豚を壊した！紙③と鍵①を入手");
       }
 
     }else{
 
-      println("カランカラン♪");
+      msg.show("カランカラン♪");
 
     }
 
@@ -495,11 +552,18 @@ void mousePressed(){
   //------------------------
   if(desk.isClicked()){
 
-    if(key1Get && !pencilGet){
+   if(key1Get && !pencilGet){
 
-      pencilGet=true;
+    pencilGet=true;
 
-      println("鉛筆を手に入れた");
+    inventory.addItem(
+        new Item(
+            "pencil",
+            "pencil.png"
+        )
+    );
+
+    msg.show("鉛筆を手に入れた");
 
     }
 
@@ -509,7 +573,7 @@ void mousePressed(){
   //------------------------
   // 地球儀
   //------------------------
-  if(globe.isClicked()){
+  if(globe.isClicked(10)){
 
     if(globeEnabled && !paper4Get){
 
@@ -519,46 +583,44 @@ void mousePressed(){
 
       paper4Get=true;
 
-      println("紙④を入手");
+      msg.show("紙④を入手");
 
     }
 
     return;
   }
 
-  //------------------------
+ //------------------------
 // 金庫
 //------------------------
-if(safe.isClicked()){
-
+if(safe.isClicked(5)){
 
   if(paper1Get &&
      paper2Get &&
      paper3Get &&
      paper4Get){
 
+      openingDrawer = false;
+      openingSafe = true;
 
-    paperPuzzle.open();
+      int ans[]={6,1,8,3};
 
+      numberLock.open(4,ans);
 
   }else{
 
-
-    msg.show(
-      "紙が足りない"
-    );
-
+      msg.show("紙が足りない");
 
   }
-
 
   return;
 
 }
+
 //------------------------
 // ドア
 //------------------------
-if(door.isClicked()){
+if(door.isClicked(30)){
 
 
   if(key2Get){
