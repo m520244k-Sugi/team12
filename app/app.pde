@@ -68,6 +68,9 @@ boolean pencilGet = false;
 // setup
 //=================================
 void setup(){
+  //フォント指定
+  PFont font = createFont("Meiryo", 50);
+  textFont(font);
 
   size(800,600);
 
