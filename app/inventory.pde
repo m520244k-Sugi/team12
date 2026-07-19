@@ -4,7 +4,7 @@ class Inventory{
 
   Item selectedItem;
 
-  float slotSize=70;
+  float slotSize=100;
   float xOffset=20;
   float yPos;
 
@@ -14,7 +14,7 @@ class Inventory{
 
     selectedItem=null;
 
-    yPos=height-90;
+    yPos=height-150;
 
   }
 

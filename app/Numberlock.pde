@@ -46,38 +46,41 @@ class NumberLock{
 
     fill(240);
     stroke(0);
-    rect(150,100,500,250);
+    rect(450,250,650,400);  
 
     fill(0);
     textAlign(CENTER);
 
     textSize(34);
-    text("NUMBER LOCK",400,145);
+    text("暗証番号を入力",775,320);
 
     // 数字
     for(int i=0;i<digit;i++){
 
-      int x=200+i*70;
+      int x = 625+i*100;
+      if (digit == 4){
+        x = 580+i*100;
+      }
 
       fill(255);
-      rect(x,200,50,50);
+      rect(x,400,100,150);
 
       fill(0);
 
-      textSize(30);
-      text(number[i],x+25,235);
+      textSize(40);
+      text(number[i],x+50,490);
 
     }
 
     // ×ボタン
     fill(255);
 
-    rect(580,120,40,40);
+    rect(1000,270,50,50);
 
     fill(0);
 
     textSize(28);
-    text("×",600,148);
+    text("×",1025,305);
 
     noStroke();
 
@@ -91,10 +94,10 @@ class NumberLock{
     if(!visible)return;
 
     // 閉じる
-    if(mouseX>=580 &&
-       mouseX<=620 &&
-       mouseY>=120 &&
-       mouseY<=160){
+    if(mouseX>=1000 &&
+       mouseX<=1050 &&
+       mouseY>=270 &&
+       mouseY<=320){
 
       visible=false;
       return;
@@ -104,12 +107,15 @@ class NumberLock{
     // 数字変更
     for(int i=0;i<digit;i++){
 
-      int x=200+i*70;
+      int x = 625+i*100;
+      if (digit == 4){
+        x = 580+i*100;
+      }
 
       if(mouseX>x &&
-         mouseX<x+50 &&
-         mouseY>200 &&
-         mouseY<250){
+         mouseX<x+100 &&
+         mouseY>400 &&
+         mouseY<550){
 
         number[i]++;
 

@@ -24,13 +24,13 @@ class MessageBox{
 
     fill(0,180);
     noStroke();
-    rect(100,510,600,45,10);
+    rect(400,880,736,60,10);
 
     fill(255);
     textAlign(CENTER,CENTER);
-    textSize(20);
+    textSize(28);
 
-    text(message,400,532);
+    text(message,768,910);
 
     timer--;
 

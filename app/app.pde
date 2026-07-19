@@ -6,7 +6,8 @@
 final int ROOM = 0;
 final int BOOK = 1;
 final int PAINTING = 2;
-final int CLEAR = 3;
+final int PIG = 3;
+final int CLEAR = 4;
 
 int GameState = ROOM;
 
@@ -20,13 +21,15 @@ PImage book2;
 PImage painting1;
 PImage painting2;
 
+PImage pig1;
+PImage pig2;
+
 int paintingSelect = 0;
 
 //---------- システム ----------
 Inventory inventory;
 NumberLock numberLock;
 MessageBox msg;
-PaperPuzzle paperPuzzle;
 
 //---------- 家具 ----------
 Funiture book;
@@ -35,7 +38,7 @@ Funiture safe;
 Funiture sofa;
 Funiture pig;
 Funiture globe;
-Funiture desk;
+Funiture shelf;
 Funiture door;
 
 //---------- フラグ ----------
@@ -72,7 +75,7 @@ void setup(){
   PFont font = createFont("Meiryo", 50);
   textFont(font);
 
-  size(800,600);
+  size(1536,1024);
 
   // 画像読込
   room1 = loadImage("room_1.png");
@@ -83,12 +86,14 @@ void setup(){
 
   painting1 = loadImage("painting_1.png");
   painting2 = loadImage("painting_2.png");
+  
+  pig1 = loadImage("pig_1.png");   
+  pig2 = loadImage("pig_2.png");
 
   // システム生成
   inventory = new Inventory();
   numberLock = new NumberLock();
   msg = new MessageBox();
-  paperPuzzle = new PaperPuzzle();
 
   //=========================
   // 家具配置
@@ -97,80 +102,80 @@ void setup(){
   // 本
   book = new Funiture(
     "book",
-    315,
-    385,
-    170,
-    85,
+    675,
+    675,
+    200,
+    100,
     false
   );
 
-  // 真ん中のタンス
+  // 真ん中のタンス(上段)
   drawer = new Funiture(
     "drawer",
-    450,
-    205,
-    145,
-    190,
+    900,
+    550,
+    200,
+    50,
     true
   );
 
   // 金庫
   safe = new Funiture(
     "safe",
-    450,
-    105,
-    135,
-    95,
+    900,
+    425,
+    200,
+    125,
     true
   );
 
   // ソファ
   sofa = new Funiture(
     "sofa",
-    25,
-    185,
+    225,
+    650,
+    325,
     250,
-    185,
     false
   );
 
   // 豚
   pig = new Funiture(
     "pig",
-    20,
+    25,
+    500,
     125,
-    75,
-    75,
+    125,
     false
   );
 
   // 地球儀
   globe = new Funiture(
     "globe",
-    35,
-    40,
-    95,
-    105,
+    50,
+    300,
+    150,
+    150,
     false
   );
 
-  // 机
-  desk = new Funiture(
-    "desk",
-    620,
-    290,
-    160,
-    170,
+  // 右の棚
+  shelf = new Funiture(
+    "shelf",
+    1300,
+    250,
+    236,
+    375,
     true
   );
 
   // ドア
   door = new Funiture(
     "door",
-    275,
-    90,
-    150,
-    300,
+    575,
+    225,
+    250,
+    450,
     true
   );
 
@@ -196,9 +201,9 @@ void draw(){
     numberLock.display();
 
     fill(255);
-    textSize(16);
+    textSize(30);
     textAlign(LEFT);
-    text("アイテムをクリックして選択",15,20);
+    text("アイテムをクリックして選択",15,40);
 
   }
 
@@ -208,29 +213,44 @@ void draw(){
   else if(GameState==BOOK){
 
     background(30);
-
-    image(book1,100,40,600,500);
-
-    // 鉛筆イベント後
-    if(bookMessage){
-
-      fill(255,255,180);
-      stroke(0);
-      rect(170,420,460,80);
-
-      fill(0);
-      textAlign(CENTER,CENTER);
-      textSize(24);
-      text("地球儀の裏を見ろ",400,460);
-
+    
+    if(bookMessage){ // 鉛筆イベント後
+    image(book2,260,180,1024,559);
+    }else{
+     image(book1,260,180,1024,559);
     }
 
     fill(255);
     textAlign(CENTER);
-    textSize(18);
-    text("クリックで閉じる",400,580);
+    textSize(30);
+    text("クリックで閉じる",768,800);
 
   }
+  
+  //------------------------
+  // 豚
+  //------------------------
+  
+  else if(GameState==PIG){
+
+    background(30);
+    
+    if(pigBroken){ // 破壊イベント後
+    image(pig2,410,230,675,531);
+    }else{
+     image(pig1,410,230,675,531);
+    }
+
+    fill(255);
+    textAlign(CENTER);
+    textSize(30);
+    text("クリックで閉じる",768,800);
+
+  }
+
+  //------------------------
+  // 絵
+  //------------------------
   
   else if(GameState==PAINTING){
 
@@ -238,20 +258,20 @@ void draw(){
 
     if(paintingSelect==1){
 
-        image(painting1,100,40,600,500);
+        image(painting1,520,80,501,640);
 
     }
 
     if(paintingSelect==2){
 
-        image(painting2,100,40,600,500);
+        image(painting2,520,80,501,640);
 
     }
 
     fill(255);
     textAlign(CENTER);
-    textSize(20);
-    text("クリックで閉じる",400,580);
+    textSize(30);
+    text("クリックで閉じる",768,800);
 
 }
 
@@ -260,20 +280,18 @@ void draw(){
   //------------------------
   else if(GameState==CLEAR){
 
-    background(40,170,90);
-    fill(255);
+    image(room2,0,0,width,height);
 
     textAlign(CENTER,CENTER);
 
     textSize(60);
-    text("GAME CLEAR!",400,230);
+    text("GAME CLEAR!",768,300);
 
-    textSize(30);
-    text("脱出成功！",400,310);
+    textSize(100);
+    text("脱出成功！",768,512);
 
   }
   msg.display();
-  paperPuzzle.display();
  
 }
 
@@ -281,11 +299,6 @@ void draw(){
 // mousePressed
 //=================================
 void mousePressed(){
-  if(paperPuzzle.visible){
-    
-    paperPuzzle.mousePressed();
-    return;
-  }
   
   inventory.checkClick(mouseX,mouseY);
 
@@ -294,47 +307,45 @@ void mousePressed(){
   //------------------------
   if(numberLock.visible){
 
-  numberLock.mousePressed();
-
-
-  if(numberLock.unlocked){
-
-    numberLock.unlocked = false;
-
-    // タンス
-    if(openingDrawer){
-
-        drawerOpened = true;
-        drawer.locked = false;
-
-        inventory.addItem(
-            new Item("magonote","magonote.png")
-        );
-
-        msg.show("孫の手を手に入れた");
-
-        openingDrawer = false;
+    numberLock.mousePressed();
+  
+    if(numberLock.unlocked){
+  
+      numberLock.unlocked = false;
+  
+      // 真ん中タンス上段
+      if(openingDrawer){
+  
+          drawerOpened = true;
+          drawer.locked = false;
+  
+          inventory.addItem(
+              new Item("magonote","magonote.png")
+          );
+  
+          msg.show("孫の手を手に入れた");
+  
+          openingDrawer = false;
+      }
+  
+      // 金庫
+      else if(openingSafe){
+  
+          safeOpened = true;
+          safe.locked = false;
+  
+          inventory.addItem(
+              new Item("key_2","key_2.png")
+          );
+  
+          key2Get = true;
+  
+          msg.show("鍵②を手に入れた");
+  
+          openingSafe = false;
+      }
     }
-
-    // 金庫
-    else if(openingSafe){
-
-        safeOpened = true;
-
-        inventory.addItem(
-            new Item("key_2","key_2.png")
-        );
-
-        key2Get = true;
-
-        msg.show("鍵②を手に入れた");
-
-        openingSafe = false;
-    }
-
     return;
-   }
-
   }
 
   //------------------------
@@ -342,18 +353,22 @@ void mousePressed(){
   //------------------------
   if(GameState == BOOK){
 
-    // 鉛筆入手後に本を見る
-    if(pencilGet && !bookMessage){
-
-      bookMessage = true;
-      globeEnabled = true;
-
-      msg.show("地球儀の裏を見ろ");
-    }
+    GameState = ROOM;
+    return;
+  }
+  
+  //------------------------
+  // 豚画面
+  //------------------------
+  if(GameState == PIG){
 
     GameState = ROOM;
     return;
   }
+
+  //------------------------
+  // 絵画面
+  //------------------------
   
   if(GameState==PAINTING){
 
@@ -361,7 +376,7 @@ void mousePressed(){
 
     return;
 
-}
+  }
 
   //------------------------
   // 部屋以外なら終了
@@ -369,77 +384,80 @@ void mousePressed(){
   if(GameState != ROOM) return;
   
   //------------------------
-// 左の絵
-//------------------------
-if(mouseX>=120 &&
-   mouseX<=260 &&
-   mouseY>=80 &&
-   mouseY<=220){
+  // 左の絵
+  //------------------------
+  if(mouseX>=250 &&
+     mouseX<=350 &&
+     mouseY>=225 &&
+     mouseY<=425){
+  
+      paintingSelect=1;
+  
+      GameState=PAINTING;
+  
+      return;
+  }
 
-    paintingSelect=1;
-
-    GameState=PAINTING;
-
-    return;
-
-}
-
-//------------------------
-// 右の絵
-//------------------------
-if(mouseX>=500 &&
-   mouseX<=640 &&
-   mouseY>=80 &&
-   mouseY<=220){
-
-    paintingSelect=2;
-
-    GameState=PAINTING;
-
-    return;
-
-}
+  //------------------------
+  // 右の絵
+  //------------------------
+  if(mouseX>=875 &&
+     mouseX<=1025 &&
+     mouseY>=250 &&
+     mouseY<=400){
+  
+      paintingSelect=2;
+  
+      GameState=PAINTING;
+  
+      return;
+  
+  }
 
   //------------------------
   // 本
   //------------------------
-  if(book.isClicked(10)){
+  if(book.isClicked()){
+    
+    // 鉛筆を装備して本を見る
+    if(inventory.selectedItem != null &&
+       inventory.selectedItem.id.equals("pencil") &&
+       !bookMessage){
 
+      bookMessage = true;
+      globeEnabled = true;
+      
+      msg.show("文字が浮かび出てきた！");
 
- if(pencilGet){
-
-   bookMessage=true;
-
-   globeEnabled=true;
-
- }
-
-
- GameState=BOOK;
-
-
- return;
-
-}
+    }else if(pencilGet &&
+             !bookMessage){
+      msg.show("うっすらと文字が書かれた跡が見える");
+    }
+    
+     GameState=BOOK;
+    
+     return;
+    
+    }
 
   //------------------------
-  // タンス
+  // 真ん中タンス上段
   //------------------------
-  if(drawer.isClicked(20)){
+  if(drawer.isClicked()){
 
     if(drawer.locked){
       
       openingDrawer = true;
       openingSafe = false;
 
-      // 本当の答えに変更してOK
+      // 羊7、豚8、牛3
       int ans[] = {7,8,3};
 
       numberLock.open(3,ans);
 
     }else{
 
-      msg.show("引き出しは開いている");
+      msg.show("引き出し(上段)は開いている");
 
     }
 
@@ -449,7 +467,7 @@ if(mouseX>=500 &&
   //------------------------
   // ソファ（紙①）
   //------------------------
-  if(sofa.isClicked(20)){
+  if(sofa.isClicked()){
 
     if(!paper1Get &&
        inventory.selectedItem != null &&
@@ -463,19 +481,21 @@ if(mouseX>=500 &&
 
       inventory.selectedItem = null;
 
-      msg.show("紙①を入手");
+      msg.show("紙「6」を入手");
+    }else if(!paper1Get){
+      msg.show("奥に何かあるようだが手が届かない・・・");
     }
 
     return;
   }
 
   //------------------------
-  // タンス下（紙②）
+  // 右の棚の下（紙②）
   //------------------------
-  if(mouseX>455 &&
-     mouseX<605 &&
-     mouseY>365 &&
-     mouseY<440){
+  if(mouseX>1225 &&
+     mouseX<1350 &&
+     mouseY>850 &&
+     mouseY<1024){
 
     if(!paper2Get &&
        inventory.selectedItem != null &&
@@ -489,18 +509,20 @@ if(mouseX>=500 &&
 
       inventory.selectedItem = null;
 
-      msg.show("紙②を入手");
+      msg.show("紙「1」を入手");
+    }else if(!paper2Get){
+      msg.show("奥に何かあるようだが手が届かない・・・");
     }
 
     return;
   }
     //------------------------
-  // タンス最下段（ハンマー）
+  // 真ん中タンス下段（ハンマー）
   //------------------------
-  if(mouseX>450 &&
-     mouseX<605 &&
-     mouseY>435 &&
-     mouseY<535){
+  if(mouseX>900 &&
+     mouseX<1100 &&
+     mouseY>600 &&
+     mouseY<700){
 
     if(!hammerGet){
 
@@ -511,6 +533,10 @@ if(mouseX>=500 &&
       hammerGet = true;
 
       msg.show("ハンマーを手に入れた");
+    }else{
+
+      msg.show("引き出し(下段)は開いている");
+
     }
 
     return;
@@ -519,43 +545,42 @@ if(mouseX>=500 &&
   //------------------------
   // 豚
   //------------------------
-  if(pig.isClicked(8)){
+  if(pig.isClicked()){
 
-    if(inventory.selectedItem!=null &&
-       inventory.selectedItem.id.equals("hammer")){
+    // ハンマーを装備して豚をクリック
+    if(inventory.selectedItem != null &&
+       inventory.selectedItem.id.equals("hammer") &&
+       !pigBroken){
 
-      if(!pigBroken){
+      pigBroken = true;
+      
+      inventory.addItem(
+       new Item("paper_3","paper_3.png")
+      );
 
-        pigBroken=true;
+      inventory.addItem(
+       new Item("key_1","key_1.png")
+      );
 
-        inventory.addItem(
-          new Item("paper_3","paper_3.png")
-        );
+      key1Get=true;
+      paper3Get=true;
 
-        inventory.addItem(
-          new Item("key_1","key_1.png")
-        );
-
-        key1Get=true;
-
-        msg.show("豚を壊した！紙③と鍵①を入手");
-      }
-
-    }else{
-
-      msg.show("カランカラン♪");
-
+      msg.show("豚を壊した！紙「8」と鍵①を入手");
     }
+    
+    GameState=PIG;
 
     return;
   }
 
   //------------------------
-  // 机
+  // 右の棚(鍵)
   //------------------------
-  if(desk.isClicked()){
+  if(shelf.isClicked()){
 
-   if(key1Get && !pencilGet){
+   if(inventory.selectedItem != null &&
+      inventory.selectedItem.id.equals("key_1") &&
+      !pencilGet){
 
     pencilGet=true;
 
@@ -568,6 +593,10 @@ if(mouseX>=500 &&
 
     msg.show("鉛筆を手に入れた");
 
+    }else if(!pencilGet){
+      msg.show("鍵がかかっている");
+    }else {
+      msg.show("戸棚の扉は開いている");
     }
 
     return;
@@ -576,7 +605,7 @@ if(mouseX>=500 &&
   //------------------------
   // 地球儀
   //------------------------
-  if(globe.isClicked(10)){
+  if(globe.isClicked()){
 
     if(globeEnabled && !paper4Get){
 
@@ -586,63 +615,75 @@ if(mouseX>=500 &&
 
       paper4Get=true;
 
-      msg.show("紙④を入手");
+      msg.show("紙「3」を入手");
 
     }
 
     return;
   }
 
- //------------------------
-// 金庫
-//------------------------
-if(safe.isClicked(5)){
-
-  if(paper1Get &&
-     paper2Get &&
-     paper3Get &&
-     paper4Get){
-
-      openingDrawer = false;
-      openingSafe = true;
-
-      int ans[]={6,1,8,3};
-
-      numberLock.open(4,ans);
-
-  }else{
-
-      msg.show("紙が足りない");
-
+  //------------------------
+  // 金庫
+  //------------------------
+  if(safe.isClicked()){
+  
+    if(safe.locked){
+      
+      if(paper1Get &&
+       paper2Get &&
+       paper3Get &&
+       paper4Get){
+         msg.show("紙と関係しているようだが・・・");
+       }
+        
+        openingDrawer = false;
+        openingSafe = true;
+  
+        // 紙1,紙2,紙3,紙4
+        int ans[] = {6,1,8,3};
+  
+        numberLock.open(4,ans);
+  
+      }else{
+  
+        msg.show("金庫は開いている");
+  
+      }
+  
   }
-
-  return;
-
-}
-
-//------------------------
-// ドア
-//------------------------
-if(door.isClicked(30)){
-
-
-  if(key2Get){
-
-    GameState=CLEAR;
-
-
-  }else{
-
-    msg.show(
-      "鍵がかかっている"
-    );
-
+  
+  //------------------------
+  // ドア
+  //------------------------
+  if(door.isClicked()){
+  
+  
+    if(key2Get &&
+       inventory.selectedItem!=null &&
+       inventory.selectedItem.id.equals("key_2")){
+  
+      GameState=CLEAR;
+  
+  
+    }else if(key1Get &&
+       inventory.selectedItem!=null &&
+       inventory.selectedItem.id.equals("key_1")){
+    
+      msg.show(
+        "鍵が合わない！"
+      );   
+         
+    }else{
+      
+      msg.show(
+        "鍵がかかっている"
+      );
+      
+    }
+  
+    return;
+  
   }
-
-
-  return;
-
-}
 
 }
  
