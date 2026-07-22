@@ -22,7 +22,9 @@
 
 ## ゲームの進め方
 ①本を調べる
-![ゲーム開始画面](materials/neko.jpg)
+<p align="center">
+  <img src="materials/neko.jpg" alt="ねこ" width="300">
+</p>
 
 まず、部屋中央の机に置かれた本をクリックします。
 
