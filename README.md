@@ -21,9 +21,10 @@
 黄色い枠：現在選択中のアイテム
 
 ## ゲームの進め方
+ゲームを開始（app.
 ①本を調べる
 <p align="left">
-  <img src="materials/neko.jpg" alt="ねこ" width="450">
+  <img src="materials/book.jpg" alt="本" width="450">
 </p>
 
 まず、部屋中央の机に置かれた本をクリックします。
