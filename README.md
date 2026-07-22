@@ -43,8 +43,11 @@
 ② 絵画を調べる
 
 次に、部屋の左側と右奥に飾られている絵画をクリックすると、拡大表示されます。
-<p align="left"><img src="materials/painting1.png" alt="絵画1" width="300"></p>
-<p align="center"><img src="materials/painting2.png" alt="絵画2" width="450"></p>
+
+<p align="center">
+  <img src="materials/painting1.png" alt="絵画1" width="250">
+  <img src="materials/painting2.png" alt="絵画2" width="250">
+</p>
 
 本に描かれていた、羊・豚・牛の数をそれぞれ数えます（2枚の絵画の数を合計します）。
 
