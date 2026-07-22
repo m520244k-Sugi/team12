@@ -30,7 +30,7 @@
   <img src="materials/room.png" alt="部屋" width="450">
 </p>
 
-①本を調べる
+<b>①本を調べる</b>
 
 <p align="left">
   <img src="materials/book.png" alt="本" width="450">
