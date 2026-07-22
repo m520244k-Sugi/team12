@@ -44,7 +44,7 @@
 
 次に、部屋の左側と右奥に飾られている絵画をクリックすると、拡大表示されます。
 
-<p align="center">
+<p align="left">
   <img src="materials/painting1.png" alt="絵画1" width="250">
   <img src="materials/painting2.png" alt="絵画2" width="250">
 </p>
